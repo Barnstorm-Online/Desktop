@@ -1,0 +1,10 @@
+{
+  "name": "barnstorm-online-desktop",
+  "description": "Barnstorm Online Mobile",
+  "version": "0.0.1",
+  "author": "Michael J Feher <github@phearzero.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^3.0.6"
+  }
+}
