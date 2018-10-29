@@ -1,53 +1,45 @@
+os: osx
+osx_image: xcode8.3
 sudo: false
 language: node_js
-node_js:
-- '8'
+node_js: '8'
+env:
+  - HOMEBREW_NO_AUTO_UPDATE=1
+  - ELECTRON_CACHE=$HOME/.cache/electron
+  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+  - WINEDLLOVERRIDES="mscoree,mshtml="
+  - WINEDEBUG="-all"
 cache:
   yarn: true
   directories:
-  - "$HOME/dist"
+  - src-electron/node_modules
   - node_modules
+  - "$HOME/dist"
+  - "$HOME/.cache/electron"
+  - "$HOME/.cache/electron-builder"
+  - "$HOME/Library/Caches/Homebrew"
   - "$HOME/.npm/_prebuilds"
   - "$HOME/.cache/yarn"
 before_deploy:
-- git config --local user.name "Michael J Feher"
-- git config --local user.email "github@phearzero.com"
-jobs:
-  include:
-  - stage: Build-Sanity
-    name: OSX, Windows, iOS, Android and Linux
-    os: osx
-    osx_image: xcode8.3
-    before_cache:
-    - rm -rf $HOME/.cache/electron-builder/wine
-    - for i in dist/electron-mat/*/; do electron-installer-zip "$i" "${i%/}-MaterialDesign.zip";
-      done
-    - for i in dist/electron-ios/*/; do electron-installer-zip "$i" "${i%/}-iOS.zip";
-      done
-    - mkdir -p dist/cache
-    - rm -rf "$HOME/dist/Barnstorm*.zip"
-    - cp dist/electron-mat/Barnstorm*.zip $HOME/dist
-    - cp dist/electron-ios/Barnstorm*.zip $HOME/dist
-    cache:
-      directories:
-      - src-electron/node_modules
-      - "$HOME/dist"
-      - "$HOME/.cache/electron"
-      - "$HOME/.cache/electron-builder"
-      - "$HOME/Library/Caches/Homebrew"
-    env:
-    - HOMEBREW_NO_AUTO_UPDATE=1
-    - ELECTRON_CACHE=$HOME/.cache/electron
-    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-    - WINEDLLOVERRIDES="mscoree,mshtml="
-    - WINEDEBUG="-all"
-    before_install:
-    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.10.1
-    - export PATH="$HOME/.yarn/bin:$PATH"
-    - npm install wine-darwin@1.9.17-1 electron-installer-zip -g
-    - wine hostname
-    - git clone https://github.com/Barnstorm-Online/Dashboard .quasar-app && cd .quasar-app && git submodule update --init --recursive
-    install:
-    - yarn
-    script:
-    - yarn build-desktop
+  - git config --local user.name "Michael J Feher"
+  - git config --local user.email "github@phearzero.com"
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
+  - for i in dist/electron-mat/*/; do electron-installer-zip "$i" "${i%/}-MaterialDesign.zip";
+    done
+  - for i in dist/electron-ios/*/; do electron-installer-zip "$i" "${i%/}-iOS.zip";
+    done
+  - mkdir -p dist/cache
+  - rm -rf "$HOME/dist/Barnstorm*.zip"
+  - cp dist/electron-mat/Barnstorm*.zip $HOME/dist
+  - cp dist/electron-ios/Barnstorm*.zip $HOME/dist
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.10.1
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  - npm install wine-darwin@1.9.17-1 electron-installer-zip -g
+  - wine hostname
+  - git clone https://github.com/Barnstorm-Online/Dashboard .quasar-app && cd .quasar-app && git submodule update --init --recursive
+install:
+  - yarn
+script:
+  - yarn build-desktop
