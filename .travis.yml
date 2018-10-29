@@ -46,7 +46,7 @@ jobs:
     - export PATH="$HOME/.yarn/bin:$PATH"
     - npm install wine-darwin@1.9.17-1 electron-installer-zip -g
     - wine hostname
-    - git clone https://github.com/Barnstorm-Online/Dashboard .quasar-app && cd .quasar-app
+    - git clone https://github.com/Barnstorm-Online/Dashboard .quasar-app && cd .quasar-app && git submodule update --init --recursive
     install:
     - yarn
     script:
