@@ -25,7 +25,7 @@ jobs:
     - for i in dist/electron-ios/*/; do electron-installer-zip "$i" "${i%/}-iOS.zip";
       done
     - mkdir -p dist/cache
-    - rm -rf dist/cache/Barnstorm*.zip
+    - rm -rf "$HOME/dist/Barnstorm*.zip"
     - cp dist/electron-mat/Barnstorm*.zip $HOME/dist
     - cp dist/electron-ios/Barnstorm*.zip $HOME/dist
     cache:
